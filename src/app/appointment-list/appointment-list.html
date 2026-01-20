@@ -1,5 +1,11 @@
 <div>
   <input [(ngModel)]="newAppointmentTitle" placeholder="Appointment Description" type="text" />
   <input [(ngModel)]="newAppointmentDate" placeholder="Appointment Date" type="date" />
-  <button type="button">Add</button>
+  <button (click)="addAppointment()" type="button">Add</button>
+
+  <ul>
+    @for (appointment of appointments; track appointment.id) {
+      <li>{{ appointment.title }} - {{ appointment.date }}</li>
+    }
+  </ul>
 </div>

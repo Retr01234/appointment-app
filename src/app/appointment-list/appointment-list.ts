@@ -14,4 +14,14 @@ export class AppointmentList {
   newAppointmentTitle: string = '';
   newAppointmentDate: Date = new Date();
   appointments: Appointment[] = [];
+
+  addAppointment() {
+    this.appointments.push({
+      id: this.appointments.length + 1,
+      title: this.newAppointmentTitle,
+      date: this.newAppointmentDate,
+    });
+    this.newAppointmentTitle = '';
+    this.newAppointmentDate = new Date();
+  }
 }
