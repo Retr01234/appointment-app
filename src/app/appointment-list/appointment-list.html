@@ -5,7 +5,10 @@
 
   <ul>
     @for (appointment of appointments; track appointment.id) {
-      <li>{{ appointment.title }} - {{ appointment.date }}</li>
+      <li>
+        {{ appointment.title }} - {{ appointment.date | date: 'dd.MM.yyyy' }}
+        <button (click)="removeAppointment(appointment)" type="button">Remove</button>
+      </li>
     }
   </ul>
 </div>

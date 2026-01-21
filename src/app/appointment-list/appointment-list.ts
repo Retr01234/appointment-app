@@ -1,27 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Appointment } from '../models/appointment';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-appointment-list',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './appointment-list.html',
   styleUrl: './appointment-list.css',
 })
-
-export class AppointmentList {
+export class AppointmentList implements OnInit {
   newAppointmentTitle: string = '';
   newAppointmentDate: Date = new Date();
   appointments: Appointment[] = [];
 
+  ngOnInit(): void {
+    let savedAppointments = localStorage.getItem('appointments');
+
+    this.appointments = savedAppointments ? JSON.parse(savedAppointments) : [];
+  }
+
   addAppointment() {
-    this.appointments.push({
-      id: this.appointments.length + 1,
-      title: this.newAppointmentTitle,
-      date: this.newAppointmentDate,
-    });
-    this.newAppointmentTitle = '';
-    this.newAppointmentDate = new Date();
+    if (this.newAppointmentTitle.trim().length && this.newAppointmentDate) {
+      let newAppointment: Appointment = {
+        id: Date.now(),
+        title: this.newAppointmentTitle,
+        date: this.newAppointmentDate,
+      };
+
+      this.appointments.push(newAppointment);
+      this.newAppointmentTitle = '';
+      this.newAppointmentDate = new Date();
+
+      localStorage.setItem('appointments', JSON.stringify(this.appointments));
+    }
+  }
+
+  removeAppointment(appointment: Appointment) {
+    this.appointments = this.appointments.filter((a) => a.id !== appointment.id);
+    localStorage.setItem('appointments', JSON.stringify(this.appointments));
   }
 }
